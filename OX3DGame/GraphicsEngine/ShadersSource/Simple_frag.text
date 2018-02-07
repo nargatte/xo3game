@@ -1,0 +1,9 @@
+﻿#version 150
+
+smooth in vec3 Color;
+
+out vec3 out_color;
+
+void main() {
+out_color = Color.rgb;
+}

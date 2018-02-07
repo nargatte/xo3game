@@ -5,8 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OX3DGame"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF"
+        WindowStartupLocation="CenterScreen"
+        Title="OX 3D Game" Height="600" Width="800">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Game">
+                <MenuItem Header="New game"></MenuItem>
+                <MenuItem Header="Show Principles"></MenuItem>
+                <MenuItem Header="OpenGl Version" Click="MenuItem_OpenGLVersion"></MenuItem>
+                <MenuItem Header="Exit"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Animation" Name="MenuItemAnimation">
+                <MenuItem Header="None" IsChecked="True"></MenuItem>
+                <MenuItem Header="Tracking"></MenuItem>
+                <MenuItem Header="Observing"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Shading Model" Name="MenuItemShadingModel">
+                <MenuItem Header="Phong" IsChecked="True"></MenuItem>
+                <MenuItem Header="Blinn"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Shading Mode" Name="MenuItemShadingMode">
+                <MenuItem Header="Phong" IsChecked="True"></MenuItem>
+                <MenuItem Header="Gouraud"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <sharpGL:OpenGLControl 
+            x:Name="openGLControl"
+            OpenGLInitialized="OpenGLControl_OpenGLInitialized"  
+            Resized="OpenGLControl_Resized" 
+            OpenGLDraw="OpenGLControl_OpenGLDraw" 
+            RenderContextType="FBO"
+            FrameRate="60"
+            DrawFPS="False"/>
+    </DockPanel>
 </Window>

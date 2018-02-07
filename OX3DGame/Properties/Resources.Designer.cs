@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OX3DGame.Properties
-{
-
-
+namespace OX3DGame.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,52 +19,93 @@ namespace OX3DGame.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OX3DGame.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #version 150
+        ///
+        ///in vec4 position;
+        ///in vec3 vNormal;
+        ///
+        ///uniform mat4 mvpMatrix;
+        ///uniform mat4 normalMatrix;
+        ///uniform mat4 mvMatrix;
+        ///uniform vec3 LightPos;
+        ///
+        ///smooth out vec3 Color;
+        ///
+        ///void main() {
+        ///
+        ///vec3 vEyeNormal = (normalMatrix * vec4(vNormal, 0.0f)).xyz;
+        ///
+        ///vec4 vPosition4 = mvMatrix * position;
+        ///vec3 vPosition3 = vPosition4.xyz / vPosition4.w;
+        ///
+        ///vec3 vLightDir = normalize(LightPos - vPosition3);
+        ///float diff = max(0.0f, dot(vEyeNormal, vLightDir));
+        ///
+        ///float shininess = 100.0f;
+        ///vec3 vReflection = ref [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Gouraud_Phong_vert {
+            get {
+                return ResourceManager.GetString("Gouraud_Phong_vert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #version 150
+        ///
+        ///smooth in vec3 Color;
+        ///
+        ///out vec3 out_color;
+        ///
+        ///void main() {
+        ///out_color = Color.rgb;
+        ///}.
+        /// </summary>
+        internal static string Simple_frag {
+            get {
+                return ResourceManager.GetString("Simple_frag", resourceCulture);
             }
         }
     }

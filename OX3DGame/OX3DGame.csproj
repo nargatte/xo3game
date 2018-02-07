@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=3.20.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.20.2\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="SharpGL, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpGL.2.4.0.0\lib\net40\SharpGL.dll</HintPath>
     </Reference>
@@ -71,12 +74,44 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FluentValue\MotionIntervalValue.cs" />
+    <Compile Include="FluentValue\SteadyValue.cs" />
+    <Compile Include="FluentValue\ValueBase.cs" />
+    <Compile Include="GameLogic.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Models\CandlestickGeometry.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Models\PhloxGeometry.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Models\TorusGeometry.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Models\WaltzGeometry.cs" />
+    <Compile Include="GraphicsEngine\ObjectGenerator.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\BoardObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\CameraObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\CandleObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\CompositeObject.cs" />
+    <Compile Include="GraphicsEngine\Geometry\GeometryStore.cs" />
+    <Compile Include="GraphicsEngine\Geometry\GeometryBase.cs" />
+    <Compile Include="GraphicsEngine\Geometry\GeometryTest.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\LightObject.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Mesh.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\MeshObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\PhloxObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\StakeObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\StandObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\TagObject.cs" />
+    <Compile Include="GraphicsEngine\Transform.cs" />
+    <Compile Include="GraphicsEngine\RenderManager.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\PointObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\SquareButtonObject.cs" />
+    <Compile Include="GraphicsEngine\Shaders\GouraudPhongShader.cs" />
+    <Compile Include="GraphicsEngine\Shaders\Shader.cs" />
+    <Compile Include="GraphicsEngine\Shaders\ShaderProgram.cs" />
+    <Compile Include="GraphicsEngine\Shaders\UniformShader.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Math3D\Matrix3dHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,6 +129,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="GraphicsEngine\ShadersSource\Simple_vert.text" />
+    <None Include="GraphicsEngine\ShadersSource\Phong_Phong_frag.text" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -102,6 +139,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="GraphicsEngine\ShadersSource\Gouraud_Phong_vert.text" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GraphicsEngine\ShadersSource\Simple_frag.text" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

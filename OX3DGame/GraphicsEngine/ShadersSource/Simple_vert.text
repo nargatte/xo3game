@@ -1,0 +1,31 @@
+﻿#version 150
+
+in vec4 inPosition;
+in vec4 inNormal;
+
+uniform mat4 mvpMatrix;
+uniform mat4 normalMatrix;
+uniform mat4 mvMatrix;
+
+smooth out vec3 Normal;
+
+void main() {
+
+float AmbientStrength = 0.2f;
+
+vec3 vEyeNormal = (normalMatrix * inNormal).xyz;
+
+vec4 vEyePosition = mvMatrix * inPosition;
+vec3 vScaledPosition = vEyePosition.xyz / vEyePosition.w;
+
+vec3 vLightDir = normalize(LightPos - vScaledPosition);
+float Diff = max(0.0f, dot(vEyeNormal, vLightDir)) + AmbientStrength;
+
+vec3 vReflection = reflect(-vLightDir, vEyeNormal);
+float Spec = pow(max(0.0f, dot(vEyeNormal, vReflection)), shininess);
+vec3 vColorReflection = specularColor * Spec;
+
+
+Color = Diff * objectColor + vColorReflection;
+gl_Position = mvpMatrix * inPosition;
+}
