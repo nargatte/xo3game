@@ -30,6 +30,7 @@ namespace OX3DGame.GraphicsEngine
             while(p != null)
             {
                 matrix = p.Transform.GetModelMatrix() * matrix;
+                p = p.Parent;
             }
 
             Vector<float> pos = view * matrix * Vector<float>.Build.Dense(new []{0f, 0f, 0f, 1f});

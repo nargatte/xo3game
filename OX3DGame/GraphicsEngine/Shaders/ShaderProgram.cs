@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 using MathNet.Numerics.LinearAlgebra;
 using SharpGL;
 
@@ -37,6 +40,16 @@ namespace OX3DGame.GraphicsEngine
         protected void SetMatrix4(Matrix<float> matrix, int uniformId) => gl.UniformMatrix4(uniformId, 1, false, matrix.AsColumnMajorArray());
         protected void SetVector3(Vector<float> vector, int uniformId) => gl.Uniform3(uniformId, vector[0], vector[1], vector[2]);
         protected void SetValue(float value, int uniformId) => gl.Uniform1(uniformId, value);
+        protected void SetVectors3(Vector<float>[] vectors, int uniformId)
+        {
+            Array.ForEach(vectors, v =>
+            {
+                if(v.Count != 3) throw new Exception("Numbers of dementions is not 3");
+            } );
+            List<float> list = new List<float>();
+            Array.ForEach(vectors, v => list.AddRange(v.AsArray()));
+            gl.Uniform3(uniformId, vectors.Length, list.ToArray());
+        }
 
         private void Link()
         {

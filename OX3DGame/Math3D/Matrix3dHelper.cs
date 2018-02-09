@@ -118,6 +118,8 @@ namespace OX3DGame.Math3D
             return result;
         }
 
+        public static Matrix<float> NormalMatrix(Matrix<float> matrix) => matrix.Inverse().Transpose();
+
         public static Vector<float> Scale(Vector<float> point)
         {
             if (point[3] != 0)

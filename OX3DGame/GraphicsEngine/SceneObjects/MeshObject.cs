@@ -25,7 +25,7 @@ namespace OX3DGame.GraphicsEngine
 
             RenderManager.Shader.MvpMatrix = projection * myMvMatrix;
             RenderManager.Shader.MvMatrix = myMvMatrix;
-            RenderManager.Shader.NormalMatrix = myMvMatrix.Inverse().Transpose();
+            RenderManager.Shader.NormalMatrix = Math3D.Matrix3dHelper.NormalMatrix(myMvMatrix);
 
             _mesh.Draw();
         }

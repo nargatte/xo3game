@@ -63,32 +63,124 @@ namespace OX3DGame.Properties {
         /// <summary>
         ///   Looks up a localized string similar to #version 150
         ///
-        ///in vec4 position;
-        ///in vec3 vNormal;
+        ///in vec4 inPosition;
+        ///in vec4 inNormal;
         ///
         ///uniform mat4 mvpMatrix;
         ///uniform mat4 normalMatrix;
         ///uniform mat4 mvMatrix;
-        ///uniform vec3 LightPos;
+        ///uniform vec3 lightPositions[5];
+        ///uniform vec3 objectColor;
+        ///uniform vec3 lightColorsDiff[5];
+        ///uniform vec3 lightColorsSpec[5];
+        ///uniform float shininess;
+        ///uniform float ambientStrength;
+        ///uniform vec3 spotLightPosition;
+        ///uniform vec3 spotLightColorDiff;
+        ///uniform vec3 spotLightColorSpec;
+        ///uniform vec3 spotLightVector;
+        ///uniform float spotLightFocus;
         ///
         ///smooth out vec3 Color;
         ///
-        ///void main() {
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Gouraud_Blinn_vert {
+            get {
+                return ResourceManager.GetString("Gouraud_Blinn_vert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #version 150
         ///
-        ///vec3 vEyeNormal = (normalMatrix * vec4(vNormal, 0.0f)).xyz;
+        ///in vec4 inPosition;
+        ///in vec4 inNormal;
         ///
-        ///vec4 vPosition4 = mvMatrix * position;
-        ///vec3 vPosition3 = vPosition4.xyz / vPosition4.w;
+        ///uniform mat4 mvpMatrix;
+        ///uniform mat4 normalMatrix;
+        ///uniform mat4 mvMatrix;
+        ///uniform vec3 lightPositions[5];
+        ///uniform vec3 objectColor;
+        ///uniform vec3 lightColorsDiff[5];
+        ///uniform vec3 lightColorsSpec[5];
+        ///uniform float shininess;
+        ///uniform float ambientStrength;
+        ///uniform vec3 spotLightPosition;
+        ///uniform vec3 spotLightColorDiff;
+        ///uniform vec3 spotLightColorSpec;
+        ///uniform vec3 spotLightVector;
+        ///uniform float spotLightFocus;
         ///
-        ///vec3 vLightDir = normalize(LightPos - vPosition3);
-        ///float diff = max(0.0f, dot(vEyeNormal, vLightDir));
+        ///smooth out vec3 Color;
         ///
-        ///float shininess = 100.0f;
-        ///vec3 vReflection = ref [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Gouraud_Phong_vert {
             get {
                 return ResourceManager.GetString("Gouraud_Phong_vert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #version 150
+        ///
+        ///smooth in vec3 Normal;
+        ///smooth in vec3 Position;
+        ///
+        ///uniform vec3 lightPositions[5];
+        ///uniform vec3 objectColor;
+        ///uniform vec3 lightColorsDiff[5];
+        ///uniform vec3 lightColorsSpec[5];
+        ///uniform float shininess;
+        ///uniform float ambientStrength;
+        ///uniform vec3 spotLightPosition;
+        ///uniform vec3 spotLightColorDiff;
+        ///uniform vec3 spotLightColorSpec;
+        ///uniform vec3 spotLightVector;
+        ///uniform float spotLightFocus;
+        ///
+        ///out vec3 Color;
+        ///
+        ///void main() {
+        ///
+        ///	Color = objectColor * ambientStrength;
+        ///	vec3 vNormal =  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Phong_Blinn_frag {
+            get {
+                return ResourceManager.GetString("Phong_Blinn_frag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #version 150
+        ///
+        ///smooth in vec3 Normal;
+        ///smooth in vec3 Position;
+        ///
+        ///uniform vec3 lightPositions[5];
+        ///uniform vec3 objectColor;
+        ///uniform vec3 lightColorsDiff[5];
+        ///uniform vec3 lightColorsSpec[5];
+        ///uniform float shininess;
+        ///uniform float ambientStrength;
+        ///uniform vec3 spotLightPosition;
+        ///uniform vec3 spotLightColorDiff;
+        ///uniform vec3 spotLightColorSpec;
+        ///uniform vec3 spotLightVector;
+        ///uniform float spotLightFocus;
+        ///
+        ///out vec3 Color;
+        ///
+        ///void main() {
+        ///
+        ///	Color = objectColor * ambientStrength;
+        ///	vec3 vNormal =  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Phong_Phong_frag {
+            get {
+                return ResourceManager.GetString("Phong_Phong_frag", resourceCulture);
             }
         }
         
@@ -106,6 +198,35 @@ namespace OX3DGame.Properties {
         internal static string Simple_frag {
             get {
                 return ResourceManager.GetString("Simple_frag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #version 150
+        ///
+        ///in vec4 inPosition;
+        ///in vec4 inNormal;
+        ///
+        ///uniform mat4 mvpMatrix;
+        ///uniform mat4 normalMatrix;
+        ///uniform mat4 mvMatrix;
+        ///
+        ///smooth out vec3 Normal;
+        ///smooth out vec3 Position;
+        ///
+        ///
+        ///void main() {
+        ///
+        ///	gl_Position = mvpMatrix * inPosition;
+        ///	Normal = normalize((normalMatrix * inNormal).xyz);
+        ///
+        ///	vec4 vEyePosition = mvMatrix * inPosition;
+        ///	Position = vEyePosition.xyz / vEyePosition.w;
+        ///}.
+        /// </summary>
+        internal static string Simple_vert {
+            get {
+                return ResourceManager.GetString("Simple_vert", resourceCulture);
             }
         }
     }

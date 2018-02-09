@@ -35,8 +35,8 @@ namespace OX3DGame.GraphicsEngine
         public Matrix<float> GetModelMatrix()
         {
             return Math3D.Matrix3dHelper.Transform(PositionX, PositionY, PositionZ) *
-                   Math3D.Matrix3dHelper.RotateX(RotationX) *
                    Math3D.Matrix3dHelper.RotateY(RotationY) *
+                   Math3D.Matrix3dHelper.RotateX(RotationX) *
                    Math3D.Matrix3dHelper.RotateZ(RotationZ) *
                    Math3D.Matrix3dHelper.Scale(ScaleX, ScaleY, ScaleZ);
         }

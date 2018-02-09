@@ -11,6 +11,9 @@ namespace OX3DGame.GraphicsEngine
         public Mesh Waltz { get; private set; }
         public Mesh Phlox { get; private set; }
         public Mesh Candlestick { get; private set; }
+        public Mesh Square { get; private set; }
+        public Mesh WaltzPoor { get; private set; }
+        public Mesh Cloche { get; private set; }
 
         private OpenGL gl;
 
@@ -49,10 +52,13 @@ namespace OX3DGame.GraphicsEngine
 
         private void CreateModels()
         {
-            Torus = AddGeometry(new TorusGeometry(1f, 2f, 12, 20));
+            Torus = AddGeometry(new TorusGeometry(0.5f, 1f, 12, 20));
             Waltz = AddGeometry(new WaltzGeometry(1f, 1f, 32));
+            WaltzPoor = AddGeometry(new WaltzGeometry(1f, 1f, 12));
             Phlox = AddGeometry(new PhloxGeometry());
-            Candlestick = AddGeometry(new CandlestickGeometry(12));
+            Candlestick = AddGeometry(new CandlestickGeometry(15));
+            Square = AddGeometry(new SquareGeometry());
+            Cloche = AddGeometry(new ClocheGeometry());
         }
 
         private Mesh AddGeometry(GeometryBase geometryBase)

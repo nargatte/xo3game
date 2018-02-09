@@ -2,7 +2,7 @@
 
 namespace OX3DGame.GraphicsEngine
 {
-    public class CameraObject : PointObject
+    public class TargetedCameraObject : PointObject, ICamera
     {
         public PointObject Target { get; set; }
 

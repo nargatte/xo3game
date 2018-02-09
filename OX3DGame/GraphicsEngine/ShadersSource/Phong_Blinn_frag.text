@@ -36,8 +36,9 @@ void main() {
 
 		float Diff = max(0.0f, dot(vNormal, vLightDir));
 
-		vec3 vReflection = reflect(-vLightDir, vNormal);
-		float Spec = pow(max(0.0f, dot(vNormal, vReflection)), shininess);
+		vec3 vHSum = vLightDir + vNormal;
+		vec3 vH = vHSum/length(vHSum);
+		float Spec = pow(max(0.0f, dot(vNormal, vH)), shininess);
 
 		Color = Color + objectColor * lightColorsDiff[i] * Diff * LengthForce;
 		Color = Color + objectColor * lightColorsSpec[i] * Spec * LengthForce;
@@ -48,8 +49,9 @@ void main() {
 
 	float DiffSpot = max(0.0f, dot(vNormal, vLightDirSpot));
 
-	vec3 vReflectionSpot = reflect(-vLightDirSpot, vNormal);
-	float SpecSpot = pow(max(0.0f, dot(vNormal, vReflectionSpot)), shininess);
+	vec3 vHSumSpot = vLightDirSpot + vNormal;
+	vec3 vHSpot = vHSumSpot/length(vHSumSpot);
+	float SpecSpot = pow(max(0.0f, dot(vNormal, vHSpot)), shininess);
 
 	Color = Color + objectColor * spotLightColorDiff * DiffSpot * SpotStrength;
 	Color = Color + objectColor * spotLightColorSpec * SpecSpot * SpotStrength;

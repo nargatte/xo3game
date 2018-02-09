@@ -70,33 +70,51 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AnimationType.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FluentValue\BasicOperation1Arg.cs" />
+    <Compile Include="FluentValue\BasicOperation2Arg.cs" />
+    <Compile Include="FluentValue\ClockValue.cs" />
+    <Compile Include="FluentValue\FunctionProviderValue.cs" />
+    <Compile Include="FluentValue\KeyProviderValue.cs" />
     <Compile Include="FluentValue\MotionIntervalValue.cs" />
+    <Compile Include="FluentValue\NegativeValue.cs" />
+    <Compile Include="FluentValue\PhysicalValue.cs" />
     <Compile Include="FluentValue\SteadyValue.cs" />
     <Compile Include="FluentValue\ValueBase.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="GraphicsEngine\Geometry\Models\CandlestickGeometry.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Models\ClocheGeometry.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Models\FollowValue.cs" />
     <Compile Include="GraphicsEngine\Geometry\Models\PhloxGeometry.cs" />
+    <Compile Include="GraphicsEngine\Geometry\Models\SquareGeometry.cs" />
     <Compile Include="GraphicsEngine\Geometry\Models\TorusGeometry.cs" />
     <Compile Include="GraphicsEngine\Geometry\Models\WaltzGeometry.cs" />
-    <Compile Include="GraphicsEngine\ObjectGenerator.cs" />
+    <Compile Include="GraphicsEngine\Scene.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\BoardObject.cs" />
-    <Compile Include="GraphicsEngine\SceneObjects\CameraObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\ICamera.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\RotaryCameraObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\TargetedCameraObject.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\CandleObject.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\CompositeObject.cs" />
     <Compile Include="GraphicsEngine\Geometry\GeometryStore.cs" />
     <Compile Include="GraphicsEngine\Geometry\GeometryBase.cs" />
-    <Compile Include="GraphicsEngine\Geometry\GeometryTest.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\FullColorObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\LampObject.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\LightObject.cs" />
     <Compile Include="GraphicsEngine\Geometry\Mesh.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\MeshObject.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\PhloxObject.cs" />
+    <Compile Include="GraphicsEngine\SceneObjects\SpotLightObject.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\StakeObject.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\StandObject.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\TagObject.cs" />
+    <Compile Include="GraphicsEngine\Shaders\GouraudBlinnShader.cs" />
+    <Compile Include="GraphicsEngine\Shaders\PhongBlinnShader.cs" />
+    <Compile Include="GraphicsEngine\Shaders\PhongPhongShader.cs" />
     <Compile Include="GraphicsEngine\Transform.cs" />
     <Compile Include="GraphicsEngine\RenderManager.cs" />
     <Compile Include="GraphicsEngine\SceneObjects\PointObject.cs" />
@@ -129,6 +147,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="GraphicsEngine\ShadersSource\Gouraud_Blinn_vert.text" />
+    <None Include="GraphicsEngine\ShadersSource\Phong_Blinn_frag.text" />
     <None Include="GraphicsEngine\ShadersSource\Simple_vert.text" />
     <None Include="GraphicsEngine\ShadersSource\Phong_Phong_frag.text" />
     <None Include="packages.config" />

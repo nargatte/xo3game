@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace OX3DGame
 {
@@ -17,7 +19,7 @@ namespace OX3DGame
         public int? GetFreePosition(int x, int y)
         {
             int z = 0;
-            while (GameState[x, y, z] == null && z != 4)
+            while (z != 4 && GameState[x, y, z] != null)
             {
                 z++;
             }
@@ -28,225 +30,98 @@ namespace OX3DGame
 
         public int[][] IsEnd()
         {
-            bool won = true;
-            for (int x = 0; x < 4; x++)
-            {
-                for (int y = 0; y < 4; y++)
-                {
-                    won = true;
-                    for (int z = 0; z < 4; z++)
-                    {
-                        if (GameState[x, y, z] == null || GameState[x, y, 0] != GameState[x, y, z])
-                        {
-                            won = false;
-                            break;
-                        }
-                    }
-                    if (won) return new[]
-                     {
-                        new[] {x, y, 0},
-                        new[] {x, y, 1},
-                        new[] {x, y, 2},
-                        new[] {x, y, 3}
-                    };
-                }
-            }
+            int[][] roz;
 
-            for (int x = 0; x < 4; x++)
-            {
-                for (int z = 0; z < 4; z++)
-                {
-                    won = true;
-                    for (int y = 0; y < 4; y++)
-                    {
-                        if (GameState[x, y, z] == null || GameState[x, y, 0] != GameState[x, y, z])
-                        {
-                            won = false;
-                            break;
-                        }
-                    }
-                    if (won) return new[]
-                    {
-                        new[] {x, 0, z},
-                        new[] {x, 1, z},
-                        new[] {x, 2, z},
-                        new[] {x, 3, z}
-                    };
-                }
-            }
+            roz = TwoVariable((x, y) => GenerateSystem(x, y, 0, 0, 0, 1));
+            if (roz != null) return roz;
 
-            for (int y = 0; y < 4; y++)
-            {
-                for (int z = 0; z < 4; z++)
-                {
-                    won = true;
-                    for (int x = 0; x < 4; x++)
-                    {
-                        if (GameState[x, y, z] == null || GameState[x, y, 0] != GameState[x, y, z])
-                        {
-                            won = false;
-                            break;
-                        }
-                    }
-                    if (won) return new[]
-                    {
-                        new[] {0, y, z},
-                        new[] {1, y, z},
-                        new[] {2, y, z},
-                        new[] {3, y, z}
-                    };
-                }
-            }
+            roz = TwoVariable((x, z) => GenerateSystem(x, 0, z, 0, 1, 0));
+            if (roz != null) return roz;
 
-            for (int x = 0; x < 4; x++)
-            {
-                won = true;
-                for (int p = 0; p < 4; p++)
-                {
-                    if (GameState[x, p, p] == null || GameState[x, p, 0] != GameState[x, p, p])
-                    {
-                        won = false;
-                        break;
-                    }
-                }
-                if (won) return new[]
-                {
-                    new[] {x, 0, 0},
-                    new[] {x, 1, 1},
-                    new[] {x, 2, 2},
-                    new[] {x, 3, 3}
-                };
-            }
+            roz = TwoVariable((y, z) => GenerateSystem(0, y, z, 1, 0, 0));
+            if (roz != null) return roz;
 
-            for (int x = 0; x < 4; x++)
-            {
-                won = true;
-                for (int p = 0; p < 4; p++)
-                {
-                    if (GameState[x, 3 - p, p] == null || GameState[x, 3 - p, 0] != GameState[x, 3 - p, p])
-                    {
-                        won = false;
-                        break;
-                    }
-                }
-                if (won) return new[]
-                {
-                    new[] {x, 0, 3},
-                    new[] {x, 1, 2},
-                    new[] {x, 2, 1},
-                    new[] {x, 3, 0}
-                };
-            }
+            roz = OneVariable((z) => GenerateSystem(0, 0, z, 1, 1, 0));
+            if (roz != null) return roz;
 
-            for (int y = 0; y < 4; y++)
-            {
-                won = true;
-                for (int p = 0; p < 4; p++)
-                {
-                    if (GameState[p, y, p] == null || GameState[p, y, 0] != GameState[p, y, p])
-                    {
-                        won = false;
-                        break;
-                    }
-                }
-                if (won) return new[]
-                {
-                    new[] {0, y, 0},
-                    new[] {1, y, 1},
-                    new[] {2, y, 2},
-                    new[] {3, y, 3}
-                };
-            }
+            roz = OneVariable((z) => GenerateSystem(3, 0, z, -1, 1, 0));
+            if (roz != null) return roz;
 
-            for (int y = 0; y < 4; y++)
-            {
-                won = true;
-                for (int p = 0; p < 4; p++)
-                {
-                    if (GameState[y, 3 - p, p] == null || GameState[y, 3 - p, 0] != GameState[y, 3 - p, p])
-                    {
-                        won = false;
-                        break;
-                    }
-                }
-                if (won) return new[]
-                {
-                    new[] {0, y, 3},
-                    new[] {1, y, 2},
-                    new[] {2, y, 1},
-                    new[] {3, y, 0}
-                };
-            }
+            roz = OneVariable((x) => GenerateSystem(x, 0, 0, 0, 1, 1));
+            if (roz != null) return roz;
 
-            won = true;
-            for (int p = 0; p < 4; p++)
-            {
-                if (GameState[p, p, p] == null || GameState[p, p, 0] != GameState[p, p, p])
-                {
-                    won = false;
-                    break;
-                }
-            }
-            if (won) return new[]
-            {
-                new[] {0, 0, 0},
-                new[] {1, 1, 1},
-                new[] {2, 2, 2},
-                new[] {3, 3, 3}
-            };
+            roz = OneVariable((y) => GenerateSystem(0, y, 0, 1, 0, 1));
+            if (roz != null) return roz;
 
-            won = true;
-            for (int p = 0; p < 4; p++)
-            {
-                if (GameState[3 - p, p, p] == null || GameState[3 - p, p, 0] != GameState[3 - p, p, p])
-                {
-                    won = false;
-                    break;
-                }
-            }
-            if (won) return new[]
-            {
-                new[] {3, 0, 0},
-                new[] {2, 1, 1},
-                new[] {1, 2, 2},
-                new[] {0, 3, 3}
-            };
+            roz = OneVariable((x) => GenerateSystem(x, 3, 0, 0, -1, 1));
+            if (roz != null) return roz;
 
-            won = true;
-            for (int p = 0; p < 4; p++)
-            {
-                if (GameState[p, 3 - p, p] == null || GameState[p, 3 - p, 0] != GameState[p, 3 - p, p])
-                {
-                    won = false;
-                    break;
-                }
-            }
-            if (won) return new[]
-            {
-                new[] {0, 3, 0},
-                new[] {1, 2, 1},
-                new[] {2, 1, 2},
-                new[] {3, 0, 3}
-            };
+            roz = OneVariable((y) => GenerateSystem(3, y, 0, -1, 0, 1));
+            if (roz != null) return roz;
 
-            won = true;
-            for (int p = 0; p < 4; p++)
-            {
-                if (GameState[3 - p, 3 - p, p] == null || GameState[3 - p, 3 - p, 0] != GameState[3 - p, 3 - p, p])
-                {
-                    won = false;
-                    break;
-                }
-            }
-            if (won) return new[]
-            {
-                new[] {3, 3, 0},
-                new[] {2, 2, 1},
-                new[] {1, 1, 2},
-                new[] {0, 0, 3}
-            };
+            roz = GenerateSystem(0, 0, 0, 1, 1, 1);
+            if (IsSystemWin(roz)) return roz;
 
+            roz = GenerateSystem(3, 0, 0, -1, 1, 1);
+            if (IsSystemWin(roz)) return roz;
+
+            roz = GenerateSystem(0, 3, 0, 1, -1, 1);
+            if (IsSystemWin(roz)) return roz;
+
+            roz = GenerateSystem(3, 3, 0, -1, -1, 1);
+            if (IsSystemWin(roz)) return roz;
             return null;
+        }
+
+        private int[][] TwoVariable(Func<int, int, int[][]> func)
+        {
+            for (int a = 0; a < 4; a++)
+            {
+                for (int b = 0; b < 4; b++)
+                {
+                    if (IsSystemWin(func(a, b)))
+                        return func(a, b);
+                }
+            }
+            return null;
+        }
+
+        private int[][] OneVariable(Func<int, int[][]> func)
+        {
+            for (int a = 0; a < 4; a++)
+            {
+                if (IsSystemWin(func(a)))
+                    return func(a);
+            }
+            return null;
+        }
+
+        private int[][] GenerateSystem(int x, int y, int z, int addX, int addY, int addZ)
+        {
+            List<int[]> list = new List<int[]>();
+            for (int i = 0; i < 4; i++)
+            {
+                list.Add(new []{x, y, z});
+                x += addX;
+                y += addY;
+                z += addZ;
+            }
+            return list.ToArray();
+        }
+
+        private bool IsSystemWin(int[][] system)
+        {
+            bool? kolor = GameState[system[0][0], system[0][1], system[0][2]];
+            if (kolor == null)
+                return false;
+
+            foreach (int[] i in system)
+            {
+                bool? tmp = GameState[i[0], i[1], i[2]];
+                if (tmp != kolor)
+                    return false;
+            }
+            return true;
         }
     }
 }

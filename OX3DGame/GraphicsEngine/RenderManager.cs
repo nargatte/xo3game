@@ -14,69 +14,81 @@ namespace OX3DGame.GraphicsEngine
         private OpenGL gl;
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
-        private Matrix<float> _projectionMatrix;
-
+        public static Matrix<float> ProjectionMatrix;
         public static double MsPerFrame = 0;
         public static long FrameCount = 0;
         public static UniformShader Shader { get; private set; }
         public static GeometryStore GeometryStore { get; private set; }
+        public static float AmbientStrength = 0.2f;
+        public static AnimationType AnimationType = AnimationType.None;
 
-        private CompositeObject so;
-        private CameraObject c;
+        private Scene _scene;
+
+        public void ChangeShader(UniformShader shader)
+        {
+            Shader = shader;
+            Shader.UseProgram();
+            Shader.AmbientStrength = AmbientStrength;
+        }
+
+        public void ResetGame()
+        {
+            _scene = new Scene();
+        }
+
+        public void SetLineMode(bool lineMode)
+        {
+            if(lineMode)
+                gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_LINE);
+            else
+                gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_FILL);
+        }
 
         public RenderManager(OpenGL gl)
         {
             this.gl = gl;
         }
 
+        public void ClickOn(float x, float y)
+        {
+            _scene.ClickOn(x, y);
+        }
+
+        public void MouseMove(float x, float y)
+        {
+            _scene.MouseMove(x, y);
+        }
 
         public void Initialize()
         {
             gl.Enable(OpenGL.GL_DEPTH_TEST);
-            //gl.PolygonMode(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_LINE);
             gl.CullFace(OpenGL.GL_BACK);
-            //gl.Enable(OpenGL.GL_CULL_FACE);
-            gl.ClearColor(0, 0, 0, 0);
+            gl.Enable(OpenGL.GL_CULL_FACE);
+            gl.ClearColor(0.3f, 0.3f, 0.3f, 0);
 
-            Shader = new GouraudPhongShader(gl);
+            Shader = new PhongPhongShader(gl);
             Shader.UseProgram();
-            Shader.AmbientStrength = 0.2f;
-            Shader.SpecularColor = Vector<float>.Build.Dense(new[] {1f, 1f, 1f});
+            Shader.AmbientStrength = AmbientStrength;
             GeometryStore = new GeometryStore(gl);
 
-            so = new CompositeObject();
-            c = new CameraObject();
-            LightObject lo = new LightObject(Vector<float>.Build.Dense(new[] { 0.93f, 0.0f, 0.0f }), 0);
-            lo.Transform.PositionY = 20f;
-            lo.Transform.PositionX = 20f;
-            so.Transform.PositionZ = -3f;
-            so.Transform.RotationY = new MotionIntervalValue(0, (float) (2f*Math.PI), 10000, t => t.Restart());
-            PointObject mo1 = new BoardObject();
-            mo1.Transform.PositionX = 1f;
-            so.AddSceneObject(mo1);
-            so.AddSceneObject(lo);
-            c.Transform.PositionY = 20f;
-            c.Transform.PositionZ = 15f;
-            c.Target = so;
+            _scene = new Scene();
 
         }
 
         public void Resize(int width, int height)
         {
-            _projectionMatrix = Math3D.Matrix3dHelper.Perspective(1, 100, (float)height / width, (float) (45f / 180f * Math.PI));
+            ProjectionMatrix = Math3D.Matrix3dHelper.Perspective(1, 100, (float)height / width, (float) (45f / 180f * Math.PI));
         }
 
         public void Draw()
         {
             FrameCount++;
-            MsPerFrame = _stopwatch.Elapsed.TotalMilliseconds;
+            MsPerFrame = Math.Min(_stopwatch.Elapsed.TotalMilliseconds, 100d);
             _stopwatch.Restart();
 
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 
-            var vm = c.GetViewMatrix();
-            so.SetLight(vm);
-            so.Draw(_projectionMatrix, vm);
+            _scene.Draw();
 
             OpenGlErrorsChecker();
         }

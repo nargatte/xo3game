@@ -1,8 +1,11 @@
 ﻿#version 150
 
-smooth in vec3 Normal;
-smooth in vec3 Position;
+in vec4 inPosition;
+in vec4 inNormal;
 
+uniform mat4 mvpMatrix;
+uniform mat4 normalMatrix;
+uniform mat4 mvMatrix;
 uniform vec3 lightPositions[5];
 uniform vec3 objectColor;
 uniform vec3 lightColorsDiff[5];
@@ -15,45 +18,52 @@ uniform vec3 spotLightColorSpec;
 uniform vec3 spotLightVector;
 uniform float spotLightFocus;
 
-out vec3 Color;
+smooth out vec3 Color;
 
 void main() {
 
+	gl_Position = mvpMatrix * inPosition;
+
 	Color = objectColor * ambientStrength;
-	vec3 vNormal = normalize(Normal);
 
 	if(ambientStrength == 1)
 	return;
 
+	vec3 vEyeNormal = normalize((normalMatrix * inNormal).xyz);
+
+	vec4 vEyePosition = mvMatrix * inPosition;
+	vec3 vScaledPosition = vEyePosition.xyz / vEyePosition.w;
+
 	int i;
 	for (i=0;i<5;i=i+1)
 	{
-		vec3 vLength = lightPositions[i] - Position;
+		vec3 vLength = lightPositions[i] - vScaledPosition;
 		float Length = length(vLength);
 		float LengthForce = min(max(1 - Length * Length / 200, 0), 1);
 
 		vec3 vLightDir = normalize(vLength);
 
-		float Diff = max(0.0f, dot(vNormal, vLightDir));
+		float Diff = max(0.0f, dot(vEyeNormal, vLightDir));
 
-		vec3 vReflection = reflect(-vLightDir, vNormal);
-		float Spec = pow(max(0.0f, dot(vNormal, vReflection)), shininess);
+		vec3 vHSum = vLightDir + vEyeNormal;
+		vec3 vH = vHSum/length(vHSum);
+		float Spec = pow(max(0.0f, dot(vEyeNormal, vH)), shininess);
 
 		Color = Color + objectColor * lightColorsDiff[i] * Diff * LengthForce;
 		Color = Color + objectColor * lightColorsSpec[i] * Spec * LengthForce;
 	}
 
-	vec3 vLightDirSpot = normalize(spotLightPosition - Position);
+	vec3 vLightDirSpot = normalize(spotLightPosition - vScaledPosition);
 	float SpotStrength = pow(max(0.0f, dot(spotLightVector, vLightDirSpot)), spotLightFocus);
 
-	float DiffSpot = max(0.0f, dot(vNormal, vLightDirSpot));
+	float DiffSpot = max(0.0f, dot(vEyeNormal, vLightDirSpot));
 
-	vec3 vReflectionSpot = reflect(-vLightDirSpot, vNormal);
-	float SpecSpot = pow(max(0.0f, dot(vNormal, vReflectionSpot)), shininess);
+	vec3 vHSumSpot = vLightDirSpot + vEyeNormal;
+	vec3 vHSpot = vHSumSpot/length(vHSumSpot);
+	float SpecSpot = pow(max(0.0f, dot(vEyeNormal, vHSpot)), shininess);
 
 	Color = Color + objectColor * spotLightColorDiff * DiffSpot * SpotStrength;
 	Color = Color + objectColor * spotLightColorSpec * SpecSpot * SpotStrength;
 
 	Color.rgb = vec3(min(1,Color.r), min(1,Color.g), min(1,Color.b));
-
 }

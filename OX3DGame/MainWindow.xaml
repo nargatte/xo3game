@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF"
         WindowStartupLocation="CenterScreen"
+        Closing="MainWindow_OnClosing"
         Title="OX 3D Game" Height="600" Width="800">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Game">
-                <MenuItem Header="New game"></MenuItem>
-                <MenuItem Header="Show Principles"></MenuItem>
+                <MenuItem Header="New game" Click="MenuItem_OnClickNewGame"></MenuItem>
                 <MenuItem Header="OpenGl Version" Click="MenuItem_OpenGLVersion"></MenuItem>
-                <MenuItem Header="Exit"></MenuItem>
+                <MenuItem Header="Exit" Click="MenuItem_OnClickExit"></MenuItem>
             </MenuItem>
             <MenuItem Header="Animation" Name="MenuItemAnimation">
                 <MenuItem Header="None" IsChecked="True"></MenuItem>
@@ -29,12 +29,18 @@
                 <MenuItem Header="Phong" IsChecked="True"></MenuItem>
                 <MenuItem Header="Gouraud"></MenuItem>
             </MenuItem>
+            <MenuItem Header="Display Mode" Name="MenuItemDisplayMode">
+                <MenuItem Header="Solid" IsChecked="True"></MenuItem>
+                <MenuItem Header="Line"></MenuItem>
+            </MenuItem>
         </Menu>
         <sharpGL:OpenGLControl 
             x:Name="openGLControl"
             OpenGLInitialized="OpenGLControl_OpenGLInitialized"  
             Resized="OpenGLControl_Resized" 
             OpenGLDraw="OpenGLControl_OpenGLDraw" 
+            MouseUp="OpenGLControl_OnMouseUp"
+            MouseMove="OpenGLControl_OnMouseMove"
             RenderContextType="FBO"
             FrameRate="60"
             DrawFPS="False"/>
