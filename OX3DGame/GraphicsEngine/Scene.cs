@@ -134,6 +134,28 @@ namespace OX3DGame.GraphicsEngine
             ChooseAnimation();
         }
 
+        public void PerformeMove(int x, int y)
+        {
+            if (_sceneState != SceneState.Turn)
+                return;
+
+            int? freePosition = _gameLogic.GetFreePosition(x, y);
+
+            if (freePosition == null) return;
+
+            _all.RemoveSceneObject(_acctualTag);
+            _board.Stakes[x, y].AddSceneObject(_acctualTag);
+            _acctualTag.StopSpin();
+            _acctualTag.Transform.PositionX = 0;
+            _acctualTag.Transform.PositionZ = 0;
+
+            _gameLogic.PerformMove(x, y);
+            _acctualTagY = freePosition.Value * 1 + 0.5f;
+            _archiverTags[x, y, freePosition.Value] = _acctualTag;
+
+            ChooseAnimation();
+        }
+
         private void ChooseAnimation()
         {
             if (RenderManager.AnimationType == AnimationType.None)

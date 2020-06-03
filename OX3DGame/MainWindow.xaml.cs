@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using AIEnemies;
+using AIEnemies.Enemies;
 using MathNet.Numerics.LinearAlgebra;
 using OX3DGame.GraphicsEngine;
 using SharpGL;
@@ -19,6 +23,8 @@ namespace OX3DGame
     {
         private OpenGL gl;
         private RenderManager RenderManager;
+        private Semaphore semaphore = new Semaphore(0, 1);
+        private Semaphore semaphore2 = new Semaphore(0, 1);
 
         public MainWindow()
         {
@@ -60,6 +66,17 @@ namespace OX3DGame
             {
                 RenderManager.SetLineMode(!(MenuItemDisplayMode.Items[0] as MenuItem).IsChecked);
             });
+
+
+            Random r = new Random(0);
+            GameOrchestrator gameOrchestrator = new GameOrchestrator(new MCTSAlgorithm(r, Math.Sqrt(2)), new MCTSAlgorithm(r, Math.Sqrt(2)), new AIEnemies.GameParameters(4, 4, 4));
+            gameOrchestrator.moved += m =>
+            {
+                semaphore2.WaitOne();
+                RenderManager.Scene.PerformeMove(m.X, m.Z);
+                semaphore2.Release();
+            };
+            new Task(() => gameOrchestrator.StartGame(() => { semaphore.WaitOne(); })).Start();
         }
 
         private void InitializeOpenGl()
@@ -102,6 +119,8 @@ namespace OX3DGame
 
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
+            semaphore2.Release();
+            semaphore2.WaitOne();
             RenderManager.Draw();
         }
 
@@ -117,6 +136,9 @@ namespace OX3DGame
 
         private void OpenGLControl_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
+            semaphore.Release();
+            return;
+
             Point p = e.GetPosition(openGLControl);
             float x = (float) (2f * p.X / openGLControl.ActualWidth - 1);
             float y = -(float) (2f * p.Y / openGLControl.ActualHeight - 1);

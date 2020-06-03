@@ -22,7 +22,7 @@ namespace OX3DGame.GraphicsEngine
         public static float AmbientStrength = 0.2f;
         public static AnimationType AnimationType = AnimationType.None;
 
-        private Scene _scene;
+        public Scene Scene { get; private set; }
 
         public void ChangeShader(UniformShader shader)
         {
@@ -33,7 +33,7 @@ namespace OX3DGame.GraphicsEngine
 
         public void ResetGame()
         {
-            _scene = new Scene();
+            Scene = new Scene();
         }
 
         public void SetLineMode(bool lineMode)
@@ -51,12 +51,12 @@ namespace OX3DGame.GraphicsEngine
 
         public void ClickOn(float x, float y)
         {
-            _scene.ClickOn(x, y);
+            Scene.ClickOn(x, y);
         }
 
         public void MouseMove(float x, float y)
         {
-            _scene.MouseMove(x, y);
+            Scene.MouseMove(x, y);
         }
 
         public void Initialize()
@@ -71,7 +71,7 @@ namespace OX3DGame.GraphicsEngine
             Shader.AmbientStrength = AmbientStrength;
             GeometryStore = new GeometryStore(gl);
 
-            _scene = new Scene();
+            Scene = new Scene();
 
         }
 
@@ -88,7 +88,7 @@ namespace OX3DGame.GraphicsEngine
 
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 
-            _scene.Draw();
+            Scene.Draw();
 
             OpenGlErrorsChecker();
         }
