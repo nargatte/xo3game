@@ -2,156 +2,129 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using C5;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 namespace AIEnemies
 {
     public class MCTSAlgorithm : IPlayer
     {
-        public MCTSAlgorithm(Random r, double cParametr)
+        public MCTSAlgorithm(Random r, double cParametr, int iterationCount)
         {
             this.random = r;
             this.cParametr = cParametr;
+            _iterationCount = iterationCount;
             heuristics = new SimpleHeuristics(r);
         }
 
-        private SimpleHeuristics heuristics;
-        private Random random;
-        private readonly double cParametr;
-        private TreeNodeBase head;
-        private bool myColor;
+        protected SimpleHeuristics heuristics;
+        protected Random random;
+        protected readonly double cParametr;
+        protected readonly int _iterationCount;
+        protected Node root;
+        protected bool myColor;
+        protected IReadOnlyGameState gameState;
 
         public void ConfigureGame(bool yourColor, IReadOnlyGameState gameState)
         {
-            head = new TreeNodeBase(gameState.GetCopy(), null);
             myColor = yourColor;
+            this.gameState = gameState;
+            SetRoot();
         }
 
         public void OpponentMove(Move move)
         {
-            PerformMove(move);
+            UpdateTreeRoot(move);
         }
 
-        public Move YourMove()
+        public virtual Move YourMove()
         {
-            for(int x = 0; x < 1000; x++)
+            for (int i = 0; i < _iterationCount; i++)
             {
-                var bestNode = FindBestNode();
-                if (bestNode == null)
-                {
-                    break;
-                }
-
-                if (bestNode.IsLeaf)
-                {
-                    var resolution = bestNode.State.GetResolution(myColor).Value;
-                    UptadeNodesToHead(bestNode, resolution);
-                }
-                else
-                {
-                    AddNewNode(bestNode);
-                }
+                DoAlgorithmIteration();
             }
-            var move = head.GetBestMove();
-            PerformMove(move);
+
+            var move = root.GetBestMove();
+            UpdateTreeRoot(move);
             return move;
         }
 
-        private TreeNodeBase FindBestNode()
+        protected virtual void SetRoot()
         {
-            var nodes = AllNodes(head);
-            if (!nodes.Any())
-                return null;
-            return AllNodes(head).Select(n => (n, n.GetScore(cParametr))).Aggregate((max, i) => max.Item2 < i.Item2 ? i : max).n;
+            root = new Node(gameState, null);
         }
 
-        private IEnumerable<TreeNodeBase> AllNodes(TreeNodeBase root)
+        protected Node Selection(GameState state)
         {
-            if (root.PossibleMoves.Any())
+            var node = root;
+            while (node.IsFullyUncover && !node.IsLeaf)
             {
-                yield return root;
-            }
-            else
-            {
-                foreach(var n in root.Childrens.Values.SelectMany(AllNodes))
-                {
-                    yield return n;
-                }
+                var pair = node.GetChildrenWithBestScore(cParametr);
+                state.PerformMove(pair.Key);
+                node = pair.Value;
             }
 
-            if (root.IsLeaf)
-            {
-                yield return root;
-            }
+            return node;
         }
 
-        private void PerformMove(Move move)
+        protected Node Expantion(Node parent, GameState state, Move move)
         {
-            foreach(var p in head.Childrens)
-            {
-                if(p.Key != move)
-                {
-                    p.Value.Delete();
-                }
-            }
-
-            if(head.Childrens.TryGetValue(move, out var newHead))
-            {
-                head = newHead;
-            }
-            else
-            {
-                var state = head.State;
-                state.PerformMove(move);
-                head = new TreeNodeBase(state, null);
-            }
-        }
-
-        private void AddNewNode(TreeNodeBase bestNode)
-        {
-            var move = GetRandomMove(bestNode);
-            var state = bestNode.State.GetCopy();
             state.PerformMove(move);
-            var resolution = PerformSimulation(state);
-            UptadeNodesToHead(bestNode, resolution);
-            bestNode.AddChild(move, state);
-            UptadeNode(bestNode.Childrens[move], resolution);
+            parent.AddChild(move, state);
+            return parent.Childrens[move];
         }
 
-        private void UptadeNodesToHead(TreeNodeBase node, GameResolution resolution)
+        protected virtual void BackPropagation(Node node, bool isMyMove, GameResolution resolution, GameState state)
         {
-            while(true)
-            {
-                UptadeNode(node, resolution);
-                if (node == head)
+            while (true)
+            { 
+                isMyMove = !isMyMove;
+                node.SymulationStatistics.Update(isMyMove ? resolution : resolution.InvertResolution());
+
+                if (node == root)
                 {
                     break;
                 }
+
                 node = node.Parent;
             }
         }
 
-        private void UptadeNode(TreeNodeBase node, GameResolution resolution)
+        protected void DoAlgorithmIteration()
         {
-            ///node.Update(resolution);
-            if (node.State.NexMoveColor == myColor)
+            var state = gameState.GetCopy();
+            var node = Selection(state);
+            if (!node.IsLeaf)
             {
-                node.Update(resolution);
+                var move = GetRandomMove(node);
+                node = Expantion(node, state, move);
+            }
+
+            var isMyMove = state.NexMoveColor == myColor;
+            var resolution = PerformSimulation(state);
+            BackPropagation(node, isMyMove, resolution, state);
+        }
+
+        protected void UpdateTreeRoot(Move move)
+        {
+            if (root.Childrens.TryGetValue(move, out var child))
+            {
+                root = child;
             }
             else
             {
-                node.Update(resolution.InvertResolution());
+                SetRoot();
             }
         }
-
-        private Move GetRandomMove(TreeNodeBase node)
+    
+        protected virtual Move GetRandomMove(Node node)
         {
-            var moves = node.PossibleMoves;
+            var moves = node.UnvisitedMoves;
             return moves[random.Next(moves.Count)];
         }
 
-        private GameResolution PerformSimulation(GameState state) =>
+        protected GameResolution PerformSimulation(GameState state) =>
             new GameOrchestrator(heuristics, heuristics, state).StartGame(() => { }, myColor);
     }
 }
+ 

@@ -69,7 +69,7 @@ namespace OX3DGame
 
 
             Random r = new Random(0);
-            GameOrchestrator gameOrchestrator = new GameOrchestrator(new MCTSAlgorithm(r, Math.Sqrt(2)), new MCTSAlgorithm(r, Math.Sqrt(2)), new AIEnemies.GameParameters(4, 4, 4));
+            GameOrchestrator gameOrchestrator = new GameOrchestrator(new Heuristics(), new MCTSAlgorithm(r, Math.Sqrt(2), 1000), new AIEnemies.GameParameters(4, 4, 4));
             gameOrchestrator.moved += m =>
             {
                 semaphore2.WaitOne();

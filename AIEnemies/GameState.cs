@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using AIEnemies.Models;
 
 namespace AIEnemies
 {
@@ -36,6 +37,17 @@ namespace AIEnemies
             return game;
         }
 
+        public IEnumerable<CounterOnBoard> GetCounterOnBoards()
+        {
+            for (int x = 0; x < gameParameters.SizeX; x++)
+                for (int z = 0; z < gameParameters.SizeZ; z++)
+                    for(int y = 0; y < feelds[x, z].Count; y++)
+                    {
+                        yield return new CounterOnBoard(feelds[x, z][y], new FieldCoordinates(x, y, z));
+                    }
+
+        }
+
         private List<bool>[,] feelds;
 
         private GameParameters gameParameters;
@@ -52,11 +64,24 @@ namespace AIEnemies
 
         public IEnumerable<Move> GetAllPossibleMoves()
         {
+            if (solutionTracker.GetSolutionsWithMaxCounters(false).Item2 == 4 ||
+                solutionTracker.GetSolutionsWithMaxCounters(true).Item2 == 4)
+            {
+                return Enumerable.Empty<Move>();
+            }
+
             var moves =
             from x in Enumerable.Range(0, gameParameters.SizeX)
             from z in Enumerable.Range(0, gameParameters.SizeZ)
             select new Move(x, z);
             return moves.Where(CanPerformMove);
+        }
+
+        public CounterOnBoard GetCounterOnBoard(Move move)
+        {
+            var h = GetHeight(move);
+            var c = move.ToField(h);
+            return new CounterOnBoard(NexMoveColor, c);
         }
 
         public void PerformMove(Move move)

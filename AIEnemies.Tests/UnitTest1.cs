@@ -28,9 +28,9 @@ namespace AIEnemies.Tests
         {
             Random r = new Random(0);
             var l = new List<GameResolution>();
-            for(int x = 0; x < 10; x++)
+            for(int x = 0; x < 100; x++)
             {
-                GameOrchestrator gameOrchestrator = new GameOrchestrator(new MCTSAlgorithm(r, Math.Sqrt(2)), new Heuristics(), new AIEnemies.GameParameters(4, 4, 4));
+                GameOrchestrator gameOrchestrator = new GameOrchestrator(new MCTSRave(r, Math.Sqrt(2), 1000, 0.6), new MCTSAlgorithm(r, Math.Sqrt(2), 1000), new AIEnemies.GameParameters(4, 4, 4));
                 var s = gameOrchestrator.StartGame(() => { });
 
                 l.Add(s);

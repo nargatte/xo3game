@@ -27,7 +27,7 @@ namespace AIEnemies
         {
             this.whitePlayer = whitePlayer;
             this.blackPlayer = blackPlayer;
-            this.gameState = gameState.GetCopy();
+            this.gameState = gameState;
 
             whitePlayer.ConfigureGame(false, this.gameState);
             blackPlayer.ConfigureGame(true, this.gameState);
@@ -48,21 +48,25 @@ namespace AIEnemies
                 if (!gameState.NexMoveColor)
                 {
                     move = whitePlayer.YourMove();
-                    gameState.PerformMove(move);
+
                     moved?.Invoke(move);
+                    gameState.PerformMove(move);
                     gameResolution = gameState.GetResolution(myColor);
                     if (gameResolution.HasValue)
                         return gameResolution.Value;
+
                     blackPlayer.OpponentMove(move);
                 }
                 else
                 {
                     move = blackPlayer.YourMove();
-                    gameState.PerformMove(move);
+
                     moved?.Invoke(move);
+                    gameState.PerformMove(move);
                     gameResolution = gameState.GetResolution(myColor);
                     if (gameResolution.HasValue)
                         return gameResolution.Value;
+
                     whitePlayer.OpponentMove(move);
                 }
             }

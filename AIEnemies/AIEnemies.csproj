@@ -47,22 +47,27 @@
     <Compile Include="Enemies\Heuristics.cs" />
     <Compile Include="Enemies\IPlayer.cs" />
     <Compile Include="Enemies\MCTSAlgorithm.cs" />
+    <Compile Include="Enemies\MCTSRave.cs" />
+    <Compile Include="Enemies\MCTSReduction.cs" />
     <Compile Include="Enemies\SimpleHeuristics.cs" />
     <Compile Include="GameOrchestrator.cs" />
     <Compile Include="GameResolutionHelper.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="IReadOnlyGameState.cs" />
     <Compile Include="IReadOnlySolutionTracker.cs" />
+    <Compile Include="Models\CounterOnBoard.cs" />
     <Compile Include="Models\FieldCoordinates.cs" />
     <Compile Include="Models\GameParameters.cs" />
     <Compile Include="Models\GameResolution.cs" />
     <Compile Include="Models\Move.cs" />
     <Compile Include="Models\Solution.cs" />
     <Compile Include="Models\SolutionsContainer.cs" />
+    <Compile Include="NodeRave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionGenerator.cs" />
     <Compile Include="SolutionTracker.cs" />
-    <Compile Include="TreeNodeBase.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="SymulationStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

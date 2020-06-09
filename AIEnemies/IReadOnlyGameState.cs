@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AIEnemies.Models;
 
 namespace AIEnemies
 {
@@ -13,5 +14,6 @@ namespace AIEnemies
         int GetHeight(Move move);
         GameResolution? GetResolution(bool player);
         GameState GetCopy();
+        CounterOnBoard GetCounterOnBoard(Move move);
     }
 }
