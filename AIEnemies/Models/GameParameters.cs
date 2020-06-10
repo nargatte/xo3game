@@ -6,6 +6,15 @@ namespace AIEnemies
 {
     public class GameParameters
     {
+        public GameParameters()
+        {
+        }
+        public GameParameters(int size)
+        {
+            SizeX = size;
+            SizeY = size;
+            SizeZ = size;
+        }
         public GameParameters(int sizeX, int sizeY, int sizeZ)
         {
             SizeX = sizeX;
@@ -13,8 +22,8 @@ namespace AIEnemies
             SizeZ = sizeZ;
         }
 
-        public int SizeX { get; }
-        public int SizeY { get; }
-        public int SizeZ { get; }
+        public int SizeX { get; set; }
+        public int SizeY { get; set; }
+        public int SizeZ { get; set; }
     }
 }
